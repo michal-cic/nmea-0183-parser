@@ -1,42 +1,38 @@
 #[cfg(test)]
 mod parser {
+
     #[test]
-    fn parse_static_valid() {
-        let parser = nmea_0183_parser::init();
-        let slices = parser.parse(
-            "$GPRMC,015606.000,A,3150.7584,N,11712.0491,E,0.00,231.36,280715,,,A*67<CR><LF>",
-        );
-        assert_eq!(slices[0], "$GPRMC");
-        assert_eq!(slices[1], "015606.000");
-        assert_eq!(slices[2], "A");
-        assert_eq!(slices[3], "3150.7584");
-        assert_eq!(slices[4], "N");
-        assert_eq!(slices[5], "11712.0491");
-        assert_eq!(slices[6], "E");
-        assert_eq!(slices[7], "0.00");
-        assert_eq!(slices[8], "231.36");
-        assert_eq!(slices[9], "280715");
-        assert_eq!(slices[10], "");
-        assert_eq!(slices[11], "");
-        assert_eq!(slices[12], "A*67<CR><LF>");
+    fn negative_test() {
+        let message = "$GNRMC,102431.659,V,,,,,0.00,0.00,210322,,,N*5C
+        $GNVTG,0.00,T,,M,0.00,N,0.00,K,N*2C
+        $GNGGA,102431.659,,,,,0,0,,,M,,M,,*59
+        $GPGSA,A,1,,,,,,,,,,,,,,,*1E
+        $BDGSA,A,1,,,,,,,,,,,,,,,*0F
+        $GPGSV,3,1,12,12,84,205,,24,50,147,,25,43,252,,32,38,294,*71
+        $GPGSV,3,2,12,19,30,050,,22,27,313,,06,24,081,,02,14,126,*7A
+        $GPGSV,3,3,12,17,13,039,,03,04,013,,29,02,200,,31,01,301,*7B
+        $BDGSV,1,1,00*68
+        $GNGLL,,,,,102431.659,V,N*6B";
+        let res = nmea_0183_validator::is_valid(message);
+
+        assert!(!res);
     }
 
     #[test]
-    fn parse_static_invalid() {
-        let parser = nmea_0183_parser::init();
-        let slices = parser.parse("$GNRMC,094905.103,V,,,,,0.00,0.00,100180,,,N*58<CR><LF>");
-        assert_eq!(slices[0], "$GNRMC");
-        assert_eq!(slices[1], "094905.103");
-        assert_eq!(slices[2], "V");
-        assert_eq!(slices[3], "");
-        assert_eq!(slices[4], "");
-        assert_eq!(slices[5], "");
-        assert_eq!(slices[6], "");
-        assert_eq!(slices[7], "0.00");
-        assert_eq!(slices[8], "0.00");
-        assert_eq!(slices[9], "100180");
-        assert_eq!(slices[10], "");
-        assert_eq!(slices[11], "");
-        assert_eq!(slices[12], "N*58<CR><LF>");
+    fn positive_test() {
+        let message = "$GNRMC,115809.000,A,5702.7873,N,00956.2853,E,0.00,75.99,210322,,,A*4B 
+                                                                      
+        $GNVTG,75.99,T,,M,0.00,N,0.00,K,A*11            
+        $GNGGA,115809.000,5702.7873,N,00956.2853,E,1,4,2.54,49.9,M,42.5,M,,*7B
+        $GPGSA,A,3,32,29,25,22,,,,,,,,,2.73,2.54,1.00*0B                
+        $BDGSA,A,3,,,,,,,,,,,,,2.73,2.54,1.00*17                          
+        $GPGSV,3,1,11,25,86,217,23,12,48,095,,29,45,205,39,02,41,089,*75
+        $GPGSV,3,2,11,31,39,300,19,22,32,269,42,32,24,248,34,37,24,166,*7C
+        $GPGSV,3,3,11,06,23,038,,24,08,154,,03,05,337,*4A
+        $BDGSV,1,1,00*68
+        $GNGLL,5702.7873,N,00956.2853,E,115809.000,A,A*4E";
+        let res = nmea_0183_validator::is_valid(message);
+
+        assert!(res);
     }
 }

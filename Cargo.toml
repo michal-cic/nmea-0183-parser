@@ -1,5 +1,5 @@
 [package]
-name = "nmea-0183-parser"
+name = "nmea-0183-validator"
 version = "0.0.1"
 edition = "2021"
 
