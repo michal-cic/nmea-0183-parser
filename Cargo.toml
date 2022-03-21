@@ -2,6 +2,8 @@
 name = "nmea-0183-validator"
 version = "0.0.1"
 edition = "2021"
+description = "NMEA 0183 no_std validator. Supported senteces: RMC, GGA, GLL."
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
