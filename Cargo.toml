@@ -1,6 +1,6 @@
 [package]
 name = "nmea-0183-validator"
-version = "0.0.2"
+version = "0.0.3"
 edition = "2021"
 description = "NMEA 0183 no_std validator. Supported senteces: RMC, GGA, GLL."
 license = "MIT"

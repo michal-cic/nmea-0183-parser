@@ -6,7 +6,7 @@ use heapless::Vec;
 fn is_rmc_valid(rmc_sentence: &str) -> bool {
     let slices: Vec<&str, 32> = rmc_sentence.split(',').collect();
 
-    if slices[2] == "V" {
+    if slices.len() >= 7 && slices[2] == "V" {
         false
     } else {
         true
@@ -16,7 +16,7 @@ fn is_rmc_valid(rmc_sentence: &str) -> bool {
 fn is_gga_valid(gga_sentence: &str) -> bool {
     let slices: Vec<&str, 32> = gga_sentence.split(',').collect();
 
-    if slices[6] == "0" {
+    if slices.len() >= 7 && slices[6] == "0" {
         false
     } else {
         true
@@ -26,7 +26,7 @@ fn is_gga_valid(gga_sentence: &str) -> bool {
 fn is_gll_valid(gll_sentence: &str) -> bool {
     let slices: Vec<&str, 32> = gll_sentence.split(',').collect();
 
-    if slices[6] == "V" {
+    if slices.len() >= 7 && slices[6] == "V" {
         false
     } else {
         true
